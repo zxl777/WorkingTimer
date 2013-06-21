@@ -33,8 +33,7 @@ NSString * const kDoneString = @"Done!";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
-    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"June 21, 2013 2:00 PM CDT"];
-    //self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
+    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
     [self.datePicker setMinDate:[NSDate date]];
     [self.datePicker setDateValue:self.countdownDate];
     [self.datePicker setTarget:self];
