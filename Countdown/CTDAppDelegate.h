@@ -8,8 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface CTDAppDelegate : NSObject <NSApplicationDelegate>
+@interface CTDAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+
+- (IBAction)quit:(id)sender;
+- (IBAction)showHidePanel:(id)sender;
+- (IBAction)showDatePanel:(id)sender;
 
 @end

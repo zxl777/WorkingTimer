@@ -467,6 +467,7 @@
 				2BB1AF2217714D5B006A71CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2BB1AF2317714D5B006A71CB /* Build configuration list for PBXNativeTarget "CountdownTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +476,7 @@
 				2BB1AF2517714D5B006A71CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
