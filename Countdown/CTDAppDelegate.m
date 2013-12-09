@@ -30,18 +30,78 @@ NSString * const kDoneString = @"Done!";
 
 @implementation CTDAppDelegate
 
+
+
+- (IBAction)GoalOK:(id)sender
+{
+    [self.GoalWindow close];
+}
+
+- (IBAction)TapedStartAgain:(id)sender
+{
+    [self TapedStart:nil];
+}
+
+-(void)StartTimer
+{
+//    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:3];
+    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:25*60+1];
+    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    IRQCount = 0;
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    [self.BreakTimeWindow close];
+}
+
+-(void)PauseTimer
+{
+    [self.timer invalidate];
+    self.StartButton.title = @"▸";
+    Paused = YES;
+}
+
+//
+//<# 书签 #> 切换：⌃/ ⌃? 设置：m回车
+//
+-(void)ResumeTimer
+{
+    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
+    Paused = NO;
+}
+
+-(void)StopTimer
+{
+    count ++;
+    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
+
+    self.BreakInfo.stringValue = @"完成25分钟聚焦";
+    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
+    [self.BreakTimeWindow makeKeyAndOrderFront:self];
+    
+//    [self.label setTextColor:[NSColor redColor]];
+    [self ShowTime:25 seconds:0];
+//    if (count==0)
+//        self.StartButton.title = @"▸";
+
+    [self.timer invalidate];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification;
+{
+    [self SaveData];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
 //    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
-    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:25*60];
+    Paused = NO;
     [self.datePicker setMinDate:[NSDate date]];
     [self.datePicker setDateValue:self.countdownDate];
     [self.datePicker setTarget:self];
     [self.datePicker setAction:@selector(pickerChanged:)];
     
-    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     
     NSStatusBar *bar = [NSStatusBar systemStatusBar];
     self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
@@ -53,21 +113,178 @@ NSString * const kDoneString = @"Done!";
     [self.window setOpaque:NO];
     [self.window setAlphaValue:0.6];
     
+    
     ShowOnTop = NO;
     [self TapedWindow:nil];
+    [self ShowTime:25 seconds:0];
 //    [self.window setBackgroundColor:[NSColor clearColor]];
-    
+    self.StartButton.title = @"▸";
     
     self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
-    [self timerFired:self.timer];
+//    [self timerFired:self.timer];
     
+    
+    NSString * doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString * path = [doc stringByAppendingPathComponent:@"working25min.sqlite"];
+    self.dbPath = path;
+    NSLog(@"path = %@", path);
+
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:self.dbPath] == NO)
+    {
+        // create it
+        FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
+        [db open];
+        [db close];
+        [self CreateTable];
+    }
+    else
+    {
+        [self LoadData];
+        self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
+    }
+    count = 0;
 }
 
-- (IBAction)TapedSetGoal:(NSMenuItem *)sender
+
+-(void)CreateTable
 {
-    [self.WorkingTable setLevel: NSFloatingWindowLevel];
+    FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
+    [db open];
+    NSString * sql = @"CREATE TABLE 'Work1' ('id' INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL , 'plan' VARCHAR(255), 'type' VARCHAR(1))"; //A,B,C,D - APlan ,BPlan ,CLan,DoingNow
+    [db executeUpdate:sql];
+    [db close];
 }
+
+-(void)CleanData
+{
+    FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
+    [db open];
+    [db executeUpdate:@"delete from Work1"];
+    [db close];
+}
+
+-(void)SaveData
+{
+    [self CleanData];
+    FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
+    [db open];
+    NSString * sql = @"insert into Work1 (plan, type) values(?, ?) ";
+ 
+    NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
+    for (id plan in APlanList)
+    {
+        [db executeUpdate:sql,plan,@"A"];
+    }
+
+    
+    NSMutableArray *A7DaysPlanList = [NSMutableArray arrayWithArray:[self.A7DaysPlanView.string componentsSeparatedByString:@"\n"]];
+    for (id plan in A7DaysPlanList)
+    {
+        [db executeUpdate:sql,plan,@"W"];
+    }
+    
+    
+    NSMutableArray *BPlanList = [NSMutableArray arrayWithArray:[self.BPlanView.string componentsSeparatedByString:@"\n"]];
+    for (id plan in BPlanList)
+    {
+        [db executeUpdate:sql,plan,@"B"];
+    }
+
+    NSMutableArray *GoalList = [NSMutableArray arrayWithArray:[self.GoalView.string componentsSeparatedByString:@"\n"]];
+    for (id plan in GoalList)
+    {
+        [db executeUpdate:sql,plan,@"C"];
+    }
+    
+    [db executeUpdate:sql,self.CurrentGoal.stringValue,@"D"];
+    
+    
+    [db close];
+}
+
+- (IBAction)TapedBreakOK:(id)sender
+{
+    BreaktimeStart = [ NSDate date];
+    [self.BreakTimeWindow close];
+}
+
+
+-(void)LoadData
+{
+    FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
+    [db open];
+    NSString * sql = @"select * from Work1 WHERE type = 'A'";
+    FMResultSet * rs = [db executeQuery:sql];
+    self.APlanView.string = @"";
+    while ([rs next])
+    {
+        self.APlanView.string = [self.APlanView.string stringByAppendingString:[rs stringForColumn:@"plan"]];
+        self.APlanView.string = [self.APlanView.string stringByAppendingString:@"\n"];
+    }
+
+    sql = @"select * from Work1 WHERE type = 'W'";
+    rs = [db executeQuery:sql];
+    self.BPlanView.string = @"";
+    while ([rs next])
+    {
+        self.A7DaysPlanView.string = [self.A7DaysPlanView.string stringByAppendingString:[rs stringForColumn:@"plan"]];
+        self.A7DaysPlanView.string = [self.A7DaysPlanView.string stringByAppendingString:@"\n"];
+    }
+    
+    
+    
+    sql = @"select * from Work1 WHERE type = 'B'";
+    rs = [db executeQuery:sql];
+    self.BPlanView.string = @"";
+    while ([rs next])
+    {
+        self.BPlanView.string = [self.BPlanView.string stringByAppendingString:[rs stringForColumn:@"plan"]];
+        self.BPlanView.string = [self.BPlanView.string stringByAppendingString:@"\n"];
+    }
+    
+    sql = @"select * from Work1 WHERE type = 'C'";
+    rs = [db executeQuery:sql];
+    self.GoalView.string = @"";
+    while ([rs next])
+    {
+        self.GoalView.string = [self.GoalView.string stringByAppendingString:[rs stringForColumn:@"plan"]];
+        self.GoalView.string = [self.GoalView.string stringByAppendingString:@"\n"];
+    }
+    
+    
+    sql = @"select * from Work1 WHERE type = 'D'";
+    rs = [db executeQuery:sql];
+    self.CurrentGoal.stringValue = @"";
+    while ([rs next])
+    {
+        self.CurrentGoal.stringValue = [rs stringForColumn:@"plan"];
+    }
+
+    
+    [db close];
+}
+
+//
+//<# 书签 #> 切换：⌃/ ⌃? 设置：m回车 
+//
+
+
+- (IBAction)TapedSetGoal:(NSButton *)sender
+{
+    if (![self.label.stringValue isEqualToString:@"25:00"])
+        IRQCount ++;
+    [self.WorkingTable makeKeyAndOrderFront:self];
+    [self.BreakTimeWindow close];
+}
+
+//- (IBAction)TapedSetGoal:(NSMenuItem *)sender
+//{
+////    [self.WorkingTable setLevel: NSFloatingWindowLevel];
+//    
+//    
+//}
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
@@ -88,15 +305,51 @@ NSString * const kDoneString = @"Done!";
 }
 
 
+- (IBAction)TapedStart:(NSButton *)sender
+{
+    if (count==0)
+        self.StartButton.title = @"0";
+    
+    NSTimeInterval BreakTime = [ [ NSDate date ] timeIntervalSinceDate:BreaktimeStart];
+    
+    
+    
+    
+    NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat:@"当前聚焦目标：\n\n《%@》",self.CurrentGoal.stringValue]
+                                     defaultButton: @"好的，开始！"
+                                   alternateButton: nil
+                                       otherButton: nil
+                         informativeTextWithFormat: [NSString stringWithFormat:@"刚才已休息了%d分钟",(int)BreakTime/60]];
+
+    [alert runModal];
+
+    [self StartTimer];
+    
+    [self SaveData];
+}
+
+- (IBAction)TapedPlay:(id)sender
+{
+    if ([self.label.stringValue isEqualToString:@"25:00"])
+        [self TapedStart:nil];
+    
+    [self.WorkingTable close];
+}
+
 - (IBAction)TapGoalDone:(NSButton *)sender
 {
+//    [self StopTimer];
+    
     if ([self.CurrentGoal.stringValue length]!=0) //记录完成目标
     {
+        self.GoalInfo.stringValue = [NSString stringWithFormat:@"\n🎉🎊😄 搞定 😄🎊🎉\n\%@\n\n",self.CurrentGoal.stringValue];
+
+        
         self.GoalView.string = [NSString stringWithFormat:@"%@\n%@",self.GoalView.string,self.CurrentGoal.stringValue];
     
         self.CurrentGoal.stringValue = @"";
+        self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
     }
-
     
     self.APlanView.string = [self.APlanView.string stringByTrimmingCharactersInSet:
                                                                     [NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -107,40 +360,47 @@ NSString * const kDoneString = @"Done!";
     
     [APlanList removeLastObject]; //弹夹下一个子弹
     self.APlanView.string = [APlanList componentsJoinedByString:@"\n"];
+    
+    self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
+    [self SaveData];
 }
 
 
+-(NSDateComponents *)GetLeftTime
+{
+    NSUInteger flags = (NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit);
+    NSDateComponents *components = [self.calendar components:flags fromDate:[NSDate date] toDate:self.countdownDate options:0];
+    return components;
+}
 
 //一秒执行一次
 - (void)timerFired:(NSTimer *)timer {
     
     NSInteger days, hours, minutes, seconds;
     
-    NSUInteger flags = (NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit);
-    NSDateComponents *components = [self.calendar components:flags fromDate:[NSDate date] toDate:self.countdownDate options:0];
+    NSDateComponents *components = [self GetLeftTime];
     
     days = [components day];
     hours = [components hour];
     minutes = [components minute];
     seconds = [components second];
     
-    if (seconds < 0) {
-        [self.label setTextColor:[NSColor redColor]];
-        [self.label setStringValue:kDoneString];
-        [self.statusItem setTitle:kDoneString];
-        [self.timer invalidate];
+    if (seconds <0)
+    {
+        [self StopTimer];
         return;
     }
     
-//    NSString *dayString = (days == 1) ? @"day" : @"days";
-//    NSString *labelString = (days == 0) ? [NSString stringWithFormat:@"%li:%02li:%02li", (long)hours, (long)minutes, (long)seconds] : [NSString stringWithFormat:@"%li %@, %li:%02li:%02li", (long)days, dayString, (long)hours, (long)minutes, (long)seconds];
+    [self ShowTime:minutes seconds:seconds];
+}
 
+-(void)ShowTime:(long)minutes seconds:(long)seconds
+{
     NSString *labelString = [NSString stringWithFormat:@"%02li:%02li", (long)minutes, (long)seconds];
-
+    
     
     [self.label setStringValue:labelString];
     [self.statusItem setTitle:labelString];
-    
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
@@ -182,4 +442,8 @@ NSString * const kDoneString = @"Done!";
     self.countdownDate = [self.datePicker dateValue];
     [self timerFired:self.timer];
 }
+
+
+
+
 @end
