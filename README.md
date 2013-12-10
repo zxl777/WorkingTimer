@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 countdown
 =========
 
@@ -23,3 +24,9 @@ License
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
+=======
+WorkingTimer
+============
+
+结合倒计时钟、番茄钟工作法和目标管理的工具软件
+>>>>>>> 19f92b066a2b4067b6aba1443d51ddba6d090289
