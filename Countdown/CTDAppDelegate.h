@@ -17,6 +17,8 @@
     
     int IRQCount;
     NSDate *BreaktimeStart;
+    int PlanTime;
+    NSTimer *BlinkTimer;
 }
 
 @property (unsafe_unretained) IBOutlet NSWindow *GoalWindow;
@@ -50,5 +52,8 @@
 @property (unsafe_unretained) IBOutlet NSTextView *GoalView;
 
 @property (unsafe_unretained) IBOutlet NSTextView *BPlanView;
+
+@property (weak) IBOutlet NSView *TimerView;
+@property (weak) IBOutlet NSProgressIndicator *ProgressBar;
 
 @end

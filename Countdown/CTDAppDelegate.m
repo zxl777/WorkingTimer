@@ -15,7 +15,7 @@ NSString * const kDoneString = @"Done!";
 
 @interface CTDAppDelegate ()
 
-@property (weak) IBOutlet NSTextField *label;
+@property (weak) IBOutlet NSTextField *TimeLabel;
 @property (weak) IBOutlet NSMenu *menu;
 @property (weak) IBOutlet NSWindow *datePickerPanel;
 @property (weak) IBOutlet NSDatePicker *datePicker;
@@ -45,11 +45,14 @@ NSString * const kDoneString = @"Done!";
 -(void)StartTimer
 {
 //    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:3];
-    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:25*60+1];
+    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:PlanTime*60+1];
     self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     IRQCount = 0;
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     [self.BreakTimeWindow close];
+    
+    [BlinkTimer invalidate];
+    [self.TimeLabel setHidden:NO];
 }
 
 -(void)PauseTimer
@@ -58,6 +61,13 @@ NSString * const kDoneString = @"Done!";
     self.StartButton.title = @"▸";
     Paused = YES;
 }
+
+- (IBAction)SaveAndHiden:(id)sender
+{
+    [self SaveData];
+    [self.WorkingTable close];
+}
+
 
 //
 //<# 书签 #> 切换：⌃/ ⌃? 设置：m回车
@@ -75,16 +85,38 @@ NSString * const kDoneString = @"Done!";
     count ++;
     self.StartButton.title = [NSString stringWithFormat:@"%d",count];
 
-    self.BreakInfo.stringValue = @"完成25分钟聚焦";
+    self.BreakInfo.stringValue = [NSString stringWithFormat:@"完成%d分钟聚焦",PlanTime ];
     [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
     [self.BreakTimeWindow makeKeyAndOrderFront:self];
     
 //    [self.label setTextColor:[NSColor redColor]];
-    [self ShowTime:25 seconds:0];
+    [self ShowTime:PlanTime seconds:0];
 //    if (count==0)
 //        self.StartButton.title = @"▸";
 
     [self.timer invalidate];
+    
+    NSTimer *timer = [NSTimer timerWithTimeInterval:15.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+    IRQCount = 0;
+    
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    BlinkTimer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
+}
+
+
+- (void)BlinkTimerWindow:(NSTimer *)timer
+{
+    static bool flag = YES;
+    [self.TimeLabel setHidden:flag];
+    flag = !flag;
+}
+
+
+- (void)HideBreakTimeWindow:(NSTimer *)timer
+{
+    [self TapedBreakOK:nil];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification;
@@ -97,6 +129,7 @@ NSString * const kDoneString = @"Done!";
     // Insert code here to initialize your application
 //    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
     Paused = NO;
+    PlanTime = 45;
     [self.datePicker setMinDate:[NSDate date]];
     [self.datePicker setDateValue:self.countdownDate];
     [self.datePicker setTarget:self];
@@ -116,9 +149,13 @@ NSString * const kDoneString = @"Done!";
     
     ShowOnTop = NO;
     [self TapedWindow:nil];
-    [self ShowTime:25 seconds:0];
+    [self ShowTime:PlanTime seconds:0];
 //    [self.window setBackgroundColor:[NSColor clearColor]];
     self.StartButton.title = @"▸";
+    
+    BlinkTimer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
+    
     
     self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
@@ -273,7 +310,7 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapedSetGoal:(NSButton *)sender
 {
-    if (![self.label.stringValue isEqualToString:@"25:00"])
+    if (![self.TimeLabel.stringValue isEqualToString:[NSString stringWithFormat:@"%d:00",PlanTime ]])
         IRQCount ++;
     [self.WorkingTable makeKeyAndOrderFront:self];
     [self.BreakTimeWindow close];
@@ -307,6 +344,7 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapedStart:(NSButton *)sender
 {
+    [self SaveData];
     if (count==0)
         self.StartButton.title = @"0";
     
@@ -324,13 +362,11 @@ NSString * const kDoneString = @"Done!";
     [alert runModal];
 
     [self StartTimer];
-    
-    [self SaveData];
 }
 
 - (IBAction)TapedPlay:(id)sender
 {
-    if ([self.label.stringValue isEqualToString:@"25:00"])
+    if ([self.TimeLabel.stringValue isEqualToString:[NSString stringWithFormat:@"%d:00",PlanTime ]])
         [self TapedStart:nil];
     
     [self.WorkingTable close];
@@ -398,8 +434,10 @@ NSString * const kDoneString = @"Done!";
 {
     NSString *labelString = [NSString stringWithFormat:@"%02li:%02li", (long)minutes, (long)seconds];
     
+    self.ProgressBar.maxValue = PlanTime;
+    self.ProgressBar.doubleValue = PlanTime-minutes;
     
-    [self.label setStringValue:labelString];
+    [self.TimeLabel setStringValue:labelString];
     [self.statusItem setTitle:labelString];
 }
 
