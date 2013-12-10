@@ -55,5 +55,6 @@
 
 @property (weak) IBOutlet NSView *TimerView;
 @property (weak) IBOutlet NSProgressIndicator *ProgressBar;
+@property (weak) IBOutlet NSTextField *CommandLine;
 
 @end

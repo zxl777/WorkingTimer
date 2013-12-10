@@ -345,19 +345,34 @@ NSString * const kDoneString = @"Done!";
 - (IBAction)TapedStart:(NSButton *)sender
 {
     [self SaveData];
-    if (count==0)
-        self.StartButton.title = @"0";
     
     NSTimeInterval BreakTime = [ [ NSDate date ] timeIntervalSinceDate:BreaktimeStart];
     
+    int breakMins = (int)BreakTime/60;
+
     
+
+    if (breakMins>60*8)
+    {
+        count = 0;
+    }
+    
+    if (breakMins <0)
+    {
+        count = 0;
+        breakMins = 0;
+    }
+    
+
+    if (count==0)
+        self.StartButton.title = @"0";
     
     
     NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat:@"当前聚焦目标：\n\n《%@》",self.CurrentGoal.stringValue]
                                      defaultButton: @"好的，开始！"
                                    alternateButton: nil
                                        otherButton: nil
-                         informativeTextWithFormat: [NSString stringWithFormat:@"刚才已休息了%d分钟",(int)BreakTime/60]];
+                         informativeTextWithFormat: [NSString stringWithFormat:@"刚才已休息了%d分钟",breakMins]];
 
     [alert runModal];
 
@@ -374,14 +389,13 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapGoalDone:(NSButton *)sender
 {
-//    [self StopTimer];
-    
     if ([self.CurrentGoal.stringValue length]!=0) //记录完成目标
     {
         self.GoalInfo.stringValue = [NSString stringWithFormat:@"\n🎉🎊😄 搞定 😄🎊🎉\n\%@\n\n",self.CurrentGoal.stringValue];
-
+        NSString *cmdLine = [self.CommandLine.stringValue stringByReplacingOccurrencesOfString:@"%1" withString:self.CurrentGoal.stringValue];
+        NSLog(@"command = %@", [self runCommand:cmdLine]);
         
-        self.GoalView.string = [NSString stringWithFormat:@"%@\n%@",self.GoalView.string,self.CurrentGoal.stringValue];
+        self.GoalView.string = [NSString stringWithFormat:@"✅%@\n%@",self.CurrentGoal.stringValue,self.GoalView.string];
     
         self.CurrentGoal.stringValue = @"";
         self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
@@ -392,12 +406,17 @@ NSString * const kDoneString = @"Done!";
     if ([self.APlanView.string length]==0)
         return;
     NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
-    self.CurrentGoal.stringValue = [APlanList lastObject]; // 加子弹
+    self.CurrentGoal.stringValue = [APlanList objectAtIndex:0]; // 加子弹
     
-    [APlanList removeLastObject]; //弹夹下一个子弹
+    [APlanList removeObjectAtIndex:0];
+//    [APlanList removeLastObject]; //弹夹下一个子弹
     self.APlanView.string = [APlanList componentsJoinedByString:@"\n"];
     
     self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
+    
+//    NSLog(@"command = %@", [self runCommand:self.CommandLine.value]);
+
+    
     [self SaveData];
 }
 
@@ -482,6 +501,36 @@ NSString * const kDoneString = @"Done!";
 }
 
 
+
+-(NSString *)runCommand:(NSString *)commandToRun
+{
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    [task setLaunchPath: @"/bin/sh"];
+    
+    NSArray *arguments = [NSArray arrayWithObjects:
+                          @"-c" ,
+                          [NSString stringWithFormat:@"%@", commandToRun],
+                          nil];
+    NSLog(@"run command: %@",commandToRun);
+    [task setArguments: arguments];
+    
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
+    
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    
+    NSString *output;
+    output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    return output;
+}
 
 
 @end
