@@ -19,6 +19,8 @@
 		2BB1AF1B17714D5B006A71CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BB1AF1917714D5B006A71CB /* InfoPlist.strings */; };
 		2BB1AF1D17714D5B006A71CB /* CountdownTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB1AF1C17714D5B006A71CB /* CountdownTests.m */; };
 		332AD05317F82DE20041F681 /* BreakTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = 332AD05217F82DE20041F681 /* BreakTime.xib */; };
+		33902422185AA8F2009411A1 /* Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 3390241F185AA8F2009411A1 /* Background.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		33902423185AA8F2009411A1 /* LBProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 33902421185AA8F2009411A1 /* LBProgressBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B3191EAEE3054F40BED05614 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D46C6D2DDC4BD895CA3D47 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +56,10 @@
 		2BB1AF1A17714D5B006A71CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2BB1AF1C17714D5B006A71CB /* CountdownTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountdownTests.m; sourceTree = "<group>"; };
 		332AD05217F82DE20041F681 /* BreakTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BreakTime.xib; sourceTree = "<group>"; };
+		3390241E185AA8F2009411A1 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
+		3390241F185AA8F2009411A1 /* Background.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Background.m; sourceTree = "<group>"; };
+		33902420185AA8F2009411A1 /* LBProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBProgressBar.h; sourceTree = "<group>"; };
+		33902421185AA8F2009411A1 /* LBProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBProgressBar.m; sourceTree = "<group>"; };
 		37C48C873DB44A7DB1F9B1CD /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +129,10 @@
 		2BB1AEF817714D5B006A71CB /* Countdown */ = {
 			isa = PBXGroup;
 			children = (
+				3390241E185AA8F2009411A1 /* Background.h */,
+				3390241F185AA8F2009411A1 /* Background.m */,
+				33902420185AA8F2009411A1 /* LBProgressBar.h */,
+				33902421185AA8F2009411A1 /* LBProgressBar.m */,
 				2BB1AF0417714D5B006A71CB /* CTDAppDelegate.h */,
 				2BB1AF0517714D5B006A71CB /* CTDAppDelegate.m */,
 				2BB1AF0717714D5B006A71CB /* MainMenu.xib */,
@@ -299,6 +309,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BB1AF0617714D5B006A71CB /* CTDAppDelegate.m in Sources */,
+				33902422185AA8F2009411A1 /* Background.m in Sources */,
+				33902423185AA8F2009411A1 /* LBProgressBar.m in Sources */,
 				2BB1AEFF17714D5B006A71CB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

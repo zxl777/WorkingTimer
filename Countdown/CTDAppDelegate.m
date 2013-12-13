@@ -96,7 +96,7 @@ NSString * const kDoneString = @"Done!";
 
     [self.timer invalidate];
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:15.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
     IRQCount = 0;
     
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -129,7 +129,7 @@ NSString * const kDoneString = @"Done!";
     // Insert code here to initialize your application
 //    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
     Paused = NO;
-    PlanTime = 45;
+    PlanTime = 25;
     [self.datePicker setMinDate:[NSDate date]];
     [self.datePicker setDateValue:self.countdownDate];
     [self.datePicker setTarget:self];
@@ -393,7 +393,9 @@ NSString * const kDoneString = @"Done!";
     {
         self.GoalInfo.stringValue = [NSString stringWithFormat:@"\n🎉🎊😄 搞定 😄🎊🎉\n\%@\n\n",self.CurrentGoal.stringValue];
         NSString *cmdLine = [self.CommandLine.stringValue stringByReplacingOccurrencesOfString:@"%1" withString:self.CurrentGoal.stringValue];
-        NSLog(@"command = %@", [self runCommand:cmdLine]);
+//        NSLog(@"command = %@", [self runCommand:cmdLine]);
+        
+        [self performSelector:@selector(runCommand:)  withObject:cmdLine afterDelay:0];
         
         self.GoalView.string = [NSString stringWithFormat:@"✅%@\n%@",self.CurrentGoal.stringValue,self.GoalView.string];
     
@@ -529,6 +531,8 @@ NSString * const kDoneString = @"Done!";
     
     NSString *output;
     output = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    
+    NSLog(@"command line = %@ \n%@", commandToRun,output);
     return output;
 }
 
