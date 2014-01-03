@@ -96,7 +96,7 @@ NSString * const kDoneString = @"Done!";
 
     [self.timer invalidate];
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:9.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
     IRQCount = 0;
     
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -395,11 +395,18 @@ NSString * const kDoneString = @"Done!";
         NSString *cmdLine = [self.CommandLine.stringValue stringByReplacingOccurrencesOfString:@"%1" withString:self.CurrentGoal.stringValue];
 //        NSLog(@"command = %@", [self runCommand:cmdLine]);
         
-        [self performSelector:@selector(runCommand:)  withObject:cmdLine afterDelay:0];
+//        [self performSelector:@selector(runCommand:)  withObject:cmdLine afterDelay:0];
+        
+        [self performSelectorInBackground:@selector(runCommand:) withObject:cmdLine];
         
         self.GoalView.string = [NSString stringWithFormat:@"✅%@\n%@",self.CurrentGoal.stringValue,self.GoalView.string];
     
         self.CurrentGoal.stringValue = @"";
+        
+        NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
+        [APlanList removeObjectAtIndex:0];
+        self.APlanView.string = [APlanList componentsJoinedByString:@"\n"];
+        
         self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
     }
     
@@ -408,18 +415,24 @@ NSString * const kDoneString = @"Done!";
     if ([self.APlanView.string length]==0)
         return;
     NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
-    self.CurrentGoal.stringValue = [APlanList objectAtIndex:0]; // 加子弹
-    
-    [APlanList removeObjectAtIndex:0];
-//    [APlanList removeLastObject]; //弹夹下一个子弹
-    self.APlanView.string = [APlanList componentsJoinedByString:@"\n"];
+    self.CurrentGoal.stringValue = [APlanList objectAtIndex:0]; // 放大第一条
     
     self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
     
-//    NSLog(@"command = %@", [self runCommand:self.CommandLine.value]);
-
-    
     [self SaveData];
+}
+
+//- (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString
+
+- (void)textDidChange:(NSNotification *)notification
+{
+    NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
+    self.CurrentGoal.stringValue = [APlanList objectAtIndex:0]; // 放大第一条
+    
+    self.CurrentGoalButton.title = self.CurrentGoal.stringValue;
+    
+//    [self SaveData];
+//    return YES;
 }
 
 

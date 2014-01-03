@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
@@ -733,7 +733,7 @@
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-Mb-tR8">
                         <rect key="frame" x="104" y="23" width="39" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="round" title="0" bezelStyle="circular" image="B430C22E-70BC-4337-8C10-C9E4119F0280" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" id="Ge8-Oh-twd">
+                        <buttonCell key="cell" type="round" title="0" bezelStyle="circular" image="DA10E89A-9D5A-4DA3-9FB5-71E097BB13F9" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" id="Ge8-Oh-twd">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="20" name="HelveticaNeue-Bold"/>
                         </buttonCell>
@@ -806,7 +806,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="qTb-mZ-9c9">
                 <rect key="frame" x="0.0" y="0.0" width="760" height="350"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="9eL-Ve-1tA">
                         <rect key="frame" x="205" y="215" width="342" height="110"/>
@@ -886,6 +886,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="minSize" width="154" height="133"/>
                                     <size key="maxSize" width="463" height="10000000"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="494" id="1JZ-ZN-Ezi"/>
+                                    </connections>
                                 </textView>
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1078,6 +1081,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </textField>
                 </subviews>
             </view>
+            <connections>
+                <outlet property="delegate" destination="494" id="nT6-tD-beW"/>
+            </connections>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="EcN-0W-Nvc"/>
         <window title="休息时间" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" wantsToBeColor="NO" visibleAtLaunch="NO" animationBehavior="default" id="IcV-0D-hmH">
@@ -1141,7 +1147,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </window>
     </objects>
     <resources>
-        <image name="B430C22E-70BC-4337-8C10-C9E4119F0280" width="1" height="1">
+        <image name="DA10E89A-9D5A-4DA3-9FB5-71E097BB13F9" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
