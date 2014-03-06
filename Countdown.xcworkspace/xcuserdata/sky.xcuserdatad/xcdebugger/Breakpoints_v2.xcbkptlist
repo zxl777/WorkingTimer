@@ -24,12 +24,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Countdown/CTDAppDelegate.m"
-            timestampString = "410420092.331165"
+            timestampString = "415094432.487494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
-            landmarkName = "-textDidChange:"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
+            landmarkName = "-TapGoalDone:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,12 +40,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Countdown/CTDAppDelegate.m"
-            timestampString = "410420092.331165"
+            timestampString = "415094432.487494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
-            landmarkName = "-textDidChange:"
+            startingLineNumber = "493"
+            endingLineNumber = "493"
+            landmarkName = "-TapGoalDone:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Countdown/CTDAppDelegate.m"
+            timestampString = "415094877.326176"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "-CheckMouse:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

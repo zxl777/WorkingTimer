@@ -19,6 +19,9 @@
     NSDate *BreaktimeStart;
     int PlanTime;
     NSTimer *BlinkTimer;
+    NSTimer *TipsTimer;
+    bool MouseMoved;
+    int MouseSleepSecond;
 }
 
 @property (unsafe_unretained) IBOutlet NSWindow *GoalWindow;
