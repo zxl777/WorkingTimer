@@ -44,7 +44,7 @@ NSString * const kDoneString = @"Done!";
 
 -(void)StartTimer
 {
-//    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:3];
+//    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:6];
     self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:PlanTime*60+1];
     self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     IRQCount = 0;
@@ -52,8 +52,10 @@ NSString * const kDoneString = @"Done!";
     [self.BreakTimeWindow close];
     
     [BlinkTimer invalidate];
+    [TipsTimer invalidate];
     [self.TimeLabel setHidden:NO];
 }
+
 
 -(void)PauseTimer
 {
@@ -85,24 +87,45 @@ NSString * const kDoneString = @"Done!";
     count ++;
     self.StartButton.title = [NSString stringWithFormat:@"%d",count];
 
-    self.BreakInfo.stringValue = [NSString stringWithFormat:@"完成%d分钟聚焦",PlanTime ];
-    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
-    [self.BreakTimeWindow makeKeyAndOrderFront:self];
+    [self PopBreakTimeWindow:nil];
+    BreaktimeStart = [ NSDate date];
+//    self.BreakInfo.stringValue = [NSString stringWithFormat:@"完成%d分钟聚焦",PlanTime ];
+//    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
+//    [self.BreakTimeWindow makeKeyAndOrderFront:self];
     
-//    [self.label setTextColor:[NSColor redColor]];
     [self ShowTime:PlanTime seconds:0];
-//    if (count==0)
-//        self.StartButton.title = @"▸";
 
     [self.timer invalidate];
     
 //    NSTimer *timer = [NSTimer timerWithTimeInterval:9.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+<<<<<<< HEAD
     IRQCount = 0;
     
 //    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+=======
+//    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
-    BlinkTimer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
+    IRQCount = 0;
+    
+
+>>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
+    
+    BlinkTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
+    
+    TipsTimer = [NSTimer timerWithTimeInterval:1*10 target:self selector:@selector(PopBreakTimeWindow:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:TipsTimer forMode:NSRunLoopCommonModes];
+}
+
+-(void)PopBreakTimeWindow:(NSString *)info
+{
+    self.BreakInfo.stringValue = [NSString stringWithFormat:@"休息时间%d/5分钟",MouseSleepSecond/60];
+    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
+    [self.BreakTimeWindow makeKeyAndOrderFront:self];
+
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+    
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -111,12 +134,14 @@ NSString * const kDoneString = @"Done!";
     static bool flag = YES;
     [self.TimeLabel setHidden:flag];
     flag = !flag;
+    
+    self.TimeLabel.stringValue = [NSString stringWithFormat:@"%02d:%02d",MouseSleepSecond/60,MouseSleepSecond%60];
 }
 
 
 - (void)HideBreakTimeWindow:(NSTimer *)timer
 {
-    [self TapedBreakOK:nil];
+    [self.BreakTimeWindow close];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification;
@@ -124,6 +149,7 @@ NSString * const kDoneString = @"Done!";
     [self SaveData];
 }
 
+<<<<<<< HEAD
 
 -(NSString *)GetCurrentTime
 {
@@ -140,6 +166,69 @@ NSString * const kDoneString = @"Done!";
     // Insert code here to initialize your application
 //    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
 //    [self GetCurrentTime];
+=======
+- (void)CheckMouse:(NSTimer *)timer
+{
+    NSLog(@"MouseMoved= %d,MouseSleepSecond = %d",MouseMoved,MouseSleepSecond);
+    
+    if (MouseMoved ==1 && MouseSleepSecond > 300) //鼠标不动超过5分钟，突然动了 = 回到电脑前
+    {
+        [self TapedPlay:nil];
+    }
+
+    if (MouseMoved ==1 && MouseSleepSecond < 300) //回到电脑前
+    {
+        
+    }
+    
+    if (MouseMoved == 0 && MouseSleepSecond ==300)
+    {
+        NSSound *sound = [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"demo_audio_share" ofType:@"mp3"] byReference:NO];
+        [sound play];
+        [TipsTimer invalidate];
+    }
+    
+    
+    if (MouseMoved ==1)
+    {
+        MouseMoved = 0;
+        MouseSleepSecond = 0;
+    }
+    
+    else if (MouseMoved ==0)
+    {
+        MouseSleepSecond ++;
+    }
+    
+}
+
+#pragma mark 番茄钟自动启动设计
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+/*
+ 有动作就启动的设计：
+    1、回到电脑前，一动鼠标，启动25分钟计时。
+    2、离开电脑，超过5分钟，执行1
+    3、25分钟时间到，5分钟内仍旧在动鼠标，每2分钟提醒一次。
+    4、25分钟时间到，离开电脑，超过5分钟，执行1
+    5、在25分钟期间，鼠标不动5分钟，下次回到电脑，重新启动25分钟。
+
+ 优点象结对编程，有另一个人在身边时，当然是马上进入工作状态。
+ */
+    MouseMoved = 0;
+    MouseSleepSecond = 3599;
+    [NSEvent addGlobalMonitorForEventsMatchingMask:NSMouseMovedMask|NSKeyDownMask|NSLeftMouseDownMask handler:^(NSEvent *e)
+    {
+//        NSLog(@"%@", e);
+        MouseMoved = 1;
+    }];
+    
+    NSTimer *CheckMouse = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(CheckMouse:) userInfo:nil repeats:YES];
+    
+    [[NSRunLoop mainRunLoop] addTimer:CheckMouse forMode:NSRunLoopCommonModes];
+
+    
+>>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
     Paused = NO;
     PlanTime = 25;
     [self.datePicker setMinDate:[NSDate date]];
@@ -165,7 +254,7 @@ NSString * const kDoneString = @"Done!";
 //    [self.window setBackgroundColor:[NSColor clearColor]];
     self.StartButton.title = @"▸";
     
-    BlinkTimer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
+    BlinkTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
     
     
@@ -255,8 +344,8 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapedBreakOK:(id)sender
 {
-    BreaktimeStart = [ NSDate date];
-    [self.BreakTimeWindow close];
+    
+    
 }
 
 
@@ -357,13 +446,12 @@ NSString * const kDoneString = @"Done!";
 - (IBAction)TapedStart:(NSButton *)sender
 {
     [self SaveData];
+    [BlinkTimer invalidate];
+    [TipsTimer invalidate];
     
     NSTimeInterval BreakTime = [ [ NSDate date ] timeIntervalSinceDate:BreaktimeStart];
     
     int breakMins = (int)BreakTime/60;
-
-    
-
     if (breakMins>60*8)
     {
         count = 0;
@@ -380,8 +468,8 @@ NSString * const kDoneString = @"Done!";
         self.StartButton.title = @"0";
     
     
-    NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat:@"当前聚焦目标：\n\n《%@》",self.CurrentGoal.stringValue]
-                                     defaultButton: @"好的，开始！"
+    NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat:@"准备聚焦目标：《%@》",self.CurrentGoal.stringValue]
+                                     defaultButton: @"开始"
                                    alternateButton: nil
                                        otherButton: nil
                          informativeTextWithFormat: [NSString stringWithFormat:@"刚才已休息了%d分钟",breakMins]];
@@ -393,8 +481,8 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapedPlay:(id)sender
 {
-    if ([self.TimeLabel.stringValue isEqualToString:[NSString stringWithFormat:@"%d:00",PlanTime ]])
-        [self TapedStart:nil];
+//    if ([self.TimeLabel.stringValue isEqualToString:[NSString stringWithFormat:@"%d:00",PlanTime ]])
+    [self TapedStart:nil];
     
     [self.WorkingTable close];
 }

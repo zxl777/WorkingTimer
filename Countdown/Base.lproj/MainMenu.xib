@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+=======
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+>>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -733,7 +740,11 @@
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-Mb-tR8">
                         <rect key="frame" x="104" y="23" width="39" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+<<<<<<< HEAD
                         <buttonCell key="cell" type="round" title="0" bezelStyle="circular" image="44735C10-0DE1-4358-91A9-89E6132358C8" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" id="Ge8-Oh-twd">
+=======
+                        <buttonCell key="cell" type="round" title="0" bezelStyle="circular" image="E4A32486-E6D7-4D70-9217-D18407FD2C77" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" id="Ge8-Oh-twd">
+>>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" size="20" name="HelveticaNeue-Bold"/>
                         </buttonCell>
@@ -1089,16 +1100,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <window title="休息时间" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IcV-0D-hmH">
             <windowStyleMask key="styleMask" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="498" y="320" width="480" height="270"/>
+            <rect key="contentRect" x="498" y="320" width="489" height="127"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" wantsLayer="YES" id="ybu-ph-IJA" customClass="Background">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="489" height="127"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VgH-1D-DgT">
-                        <rect key="frame" x="38" y="116" width="444" height="38"/>
+                        <rect key="frame" x="5" y="44" width="493" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="已专注25分钟，休息会儿！" id="VjE-cb-ddV">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="休息时间到了！" id="VjE-cb-ddV">
                             <font key="font" size="36" name="STHeitiSC-Medium"/>
                             <color key="textColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1158,7 +1169,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </window>
     </objects>
     <resources>
+<<<<<<< HEAD
         <image name="44735C10-0DE1-4358-91A9-89E6132358C8" width="1" height="1">
+=======
+        <image name="E4A32486-E6D7-4D70-9217-D18407FD2C77" width="1" height="1">
+>>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
