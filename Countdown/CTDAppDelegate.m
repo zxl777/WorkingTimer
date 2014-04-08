@@ -96,10 +96,10 @@ NSString * const kDoneString = @"Done!";
 
     [self.timer invalidate];
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:9.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
+//    NSTimer *timer = [NSTimer timerWithTimeInterval:9.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
     IRQCount = 0;
     
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+//    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     BlinkTimer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
@@ -124,10 +124,22 @@ NSString * const kDoneString = @"Done!";
     [self SaveData];
 }
 
+
+-(NSString *)GetCurrentTime
+{
+    NSDate *curDate = [NSDate date];//获取当前日期
+    NSDateFormatter *formater =   [[ NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-MM-dd🕑HH:mm:ss"];
+    NSString * curTime = [formater stringFromDate:curDate];
+    NSLog(@"%@",curTime);
+    return curTime;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
 //    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
+//    [self GetCurrentTime];
     Paused = NO;
     PlanTime = 25;
     [self.datePicker setMinDate:[NSDate date]];
@@ -392,7 +404,10 @@ NSString * const kDoneString = @"Done!";
     if ([self.CurrentGoal.stringValue length]!=0) //记录完成目标
     {
         self.GoalInfo.stringValue = [NSString stringWithFormat:@"\n🎉🎊😄 搞定 😄🎊🎉\n\%@\n\n",self.CurrentGoal.stringValue];
-        NSString *cmdLine = [self.CommandLine.stringValue stringByReplacingOccurrencesOfString:@"%1" withString:self.CurrentGoal.stringValue];
+        
+        NSString *GitMessage = [NSString stringWithFormat:@"%@〰〰〰📥%@",self.CurrentGoal.stringValue,[self GetCurrentTime]];
+        
+        NSString *cmdLine = [self.CommandLine.stringValue stringByReplacingOccurrencesOfString:@"%1" withString:GitMessage];
 //        NSLog(@"command = %@", [self runCommand:cmdLine]);
         
 //        [self performSelector:@selector(runCommand:)  withObject:cmdLine afterDelay:0];
