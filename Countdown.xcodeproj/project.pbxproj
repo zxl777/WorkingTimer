@@ -22,6 +22,7 @@
 		33902422185AA8F2009411A1 /* Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 3390241F185AA8F2009411A1 /* Background.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		33902423185AA8F2009411A1 /* LBProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 33902421185AA8F2009411A1 /* LBProgressBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		33DCAD3518BC5F1C00C95085 /* demo_audio_share.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 33DCAD3418BC5F1C00C95085 /* demo_audio_share.mp3 */; };
+		33FF92191CB75001008FBA7D /* JWBorderlessWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FF92181CB75001008FBA7D /* JWBorderlessWindow.m */; };
 		B3191EAEE3054F40BED05614 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D46C6D2DDC4BD895CA3D47 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,8 @@
 		33902420185AA8F2009411A1 /* LBProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBProgressBar.h; sourceTree = "<group>"; };
 		33902421185AA8F2009411A1 /* LBProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBProgressBar.m; sourceTree = "<group>"; };
 		33DCAD3418BC5F1C00C95085 /* demo_audio_share.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = demo_audio_share.mp3; sourceTree = "<group>"; };
+		33FF92171CB75001008FBA7D /* JWBorderlessWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWBorderlessWindow.h; sourceTree = "<group>"; };
+		33FF92181CB75001008FBA7D /* JWBorderlessWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWBorderlessWindow.m; sourceTree = "<group>"; };
 		37C48C873DB44A7DB1F9B1CD /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +134,8 @@
 		2BB1AEF817714D5B006A71CB /* Countdown */ = {
 			isa = PBXGroup;
 			children = (
+				33FF92171CB75001008FBA7D /* JWBorderlessWindow.h */,
+				33FF92181CB75001008FBA7D /* JWBorderlessWindow.m */,
 				33DCAD3418BC5F1C00C95085 /* demo_audio_share.mp3 */,
 				3390241E185AA8F2009411A1 /* Background.h */,
 				3390241F185AA8F2009411A1 /* Background.m */,
@@ -223,7 +228,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CTD;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Stand Alone";
 				TargetAttributes = {
 					2BB1AF0F17714D5B006A71CB = {
@@ -315,6 +320,7 @@
 				2BB1AF0617714D5B006A71CB /* CTDAppDelegate.m in Sources */,
 				33902422185AA8F2009411A1 /* Background.m in Sources */,
 				33902423185AA8F2009411A1 /* LBProgressBar.m in Sources */,
+				33FF92191CB75001008FBA7D /* JWBorderlessWindow.m in Sources */,
 				2BB1AEFF17714D5B006A71CB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,6 +396,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -452,6 +459,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Countdown/Countdown-Prefix.pch";
 				INFOPLIST_FILE = "Countdown/Countdown-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.standalone.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -466,6 +474,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Countdown/Countdown-Prefix.pch";
 				INFOPLIST_FILE = "Countdown/Countdown-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.standalone.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -487,6 +496,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "CountdownTests/CountdownTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.standalone.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -505,6 +515,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Countdown/Countdown-Prefix.pch";
 				INFOPLIST_FILE = "CountdownTests/CountdownTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.standalone.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

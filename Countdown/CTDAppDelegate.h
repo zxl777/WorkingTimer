@@ -36,9 +36,15 @@
 
 @property (strong) IBOutlet NSWindow *WorkingTable;
 
+-(void)CheckMouse:(NSTimer *)timer;
+- (void)timerFired:(NSTimer *)timer;
 - (IBAction)quit:(id)sender;
 - (IBAction)showHidePanel:(id)sender;
 - (IBAction)showDatePanel:(id)sender;
+- (IBAction)TapedStart:(NSButton *)sender;
+-(void)SaveData;
+-(void)ShowTime:(long)minutes seconds:(long)seconds;
+
 
 @property (weak) IBOutlet NSTextField *CurrentGoal;
 
@@ -59,5 +65,17 @@
 @property (weak) IBOutlet NSView *TimerView;
 @property (weak) IBOutlet NSProgressIndicator *ProgressBar;
 @property (weak) IBOutlet NSTextField *CommandLine;
+
+@property (weak) IBOutlet NSTextField *TimeLabel;
+@property (weak) IBOutlet NSMenu *menu;
+@property (weak) IBOutlet NSWindow *datePickerPanel;
+@property (weak) IBOutlet NSDatePicker *datePicker;
+
+@property (strong) NSCalendar *calendar;
+@property (strong) NSTimer *timer;
+@property (strong) NSDate *countdownDate;
+@property (strong) NSStatusItem *statusItem;
+@property (assign) BOOL timerWindowVisible;
+
 
 @end

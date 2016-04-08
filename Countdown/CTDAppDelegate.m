@@ -13,21 +13,6 @@ NSString * const kHideTimerPanelString = @"Hide Timer Panel";
 NSString * const kDoneString = @"Done!";
 
 
-@interface CTDAppDelegate ()
-
-@property (weak) IBOutlet NSTextField *TimeLabel;
-@property (weak) IBOutlet NSMenu *menu;
-@property (weak) IBOutlet NSWindow *datePickerPanel;
-@property (weak) IBOutlet NSDatePicker *datePicker;
-
-@property (strong) NSCalendar *calendar;
-@property (strong) NSTimer *timer;
-@property (strong) NSDate *countdownDate;
-@property (strong) NSStatusItem *statusItem;
-@property (assign) BOOL timerWindowVisible;
-
-@end
-
 @implementation CTDAppDelegate
 
 
@@ -60,7 +45,7 @@ NSString * const kDoneString = @"Done!";
 -(void)PauseTimer
 {
     [self.timer invalidate];
-    self.StartButton.title = @"▸";
+//    self.StartButton.title = @"▸";
     Paused = YES;
 }
 
@@ -78,43 +63,37 @@ NSString * const kDoneString = @"Done!";
 {
     self.timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
+//    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
     Paused = NO;
 }
 
 -(void)StopTimer
 {
     count ++;
-    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
+//    self.StartButton.title = [NSString stringWithFormat:@"%d",count];
 
-    [self PopBreakTimeWindow:nil];
+//    [self PopBreakTimeWindow:nil];
     BreaktimeStart = [ NSDate date];
-//    self.BreakInfo.stringValue = [NSString stringWithFormat:@"完成%d分钟聚焦",PlanTime ];
-//    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
-//    [self.BreakTimeWindow makeKeyAndOrderFront:self];
+    self.BreakInfo.stringValue = @"现在离开座位，站起来！\n休息眼睛，大脑，颈肩部！";// [NSString stringWithFormat:@"完成%d分钟聚焦",PlanTime ];
+    [self.BreakTimeWindow setLevel: NSFloatingWindowLevel];
+    [self.BreakTimeWindow makeKeyAndOrderFront:self];
     
     [self ShowTime:PlanTime seconds:0];
 
     [self.timer invalidate];
     
 //    NSTimer *timer = [NSTimer timerWithTimeInterval:9.0 target:self selector:@selector(HideBreakTimeWindow:) userInfo:nil repeats:NO];
-<<<<<<< HEAD
-    IRQCount = 0;
-    
-//    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-=======
 //    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     IRQCount = 0;
     
 
->>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
     
     BlinkTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
     
-    TipsTimer = [NSTimer timerWithTimeInterval:1*10 target:self selector:@selector(PopBreakTimeWindow:) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:TipsTimer forMode:NSRunLoopCommonModes];
+//    TipsTimer = [NSTimer timerWithTimeInterval:1*10 target:self selector:@selector(PopBreakTimeWindow:) userInfo:nil repeats:YES];
+//    [[NSRunLoop mainRunLoop] addTimer:TipsTimer forMode:NSRunLoopCommonModes];
 }
 
 -(void)PopBreakTimeWindow:(NSString *)info
@@ -135,7 +114,7 @@ NSString * const kDoneString = @"Done!";
     [self.TimeLabel setHidden:flag];
     flag = !flag;
     
-    self.TimeLabel.stringValue = [NSString stringWithFormat:@"%02d:%02d",MouseSleepSecond/60,MouseSleepSecond%60];
+    self.TimeLabel.stringValue = @"25:00";//[NSString stringWithFormat:@"%02d:%02d",MouseSleepSecond/60,MouseSleepSecond%60];
 }
 
 
@@ -149,7 +128,6 @@ NSString * const kDoneString = @"Done!";
     [self SaveData];
 }
 
-<<<<<<< HEAD
 
 -(NSString *)GetCurrentTime
 {
@@ -161,13 +139,8 @@ NSString * const kDoneString = @"Done!";
     return curTime;
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
-//    self.countdownDate = [NSDate dateWithNaturalLanguageString:@"Tomorrow 2:00 PM"];
-//    [self GetCurrentTime];
-=======
-- (void)CheckMouse:(NSTimer *)timer
+
+-(void)CheckMouse:(NSTimer *)timer
 {
     NSLog(@"MouseMoved= %d,MouseSleepSecond = %d",MouseMoved,MouseSleepSecond);
     
@@ -217,21 +190,22 @@ NSString * const kDoneString = @"Done!";
  */
     MouseMoved = 0;
     MouseSleepSecond = 3599;
-    [NSEvent addGlobalMonitorForEventsMatchingMask:NSMouseMovedMask|NSKeyDownMask|NSLeftMouseDownMask handler:^(NSEvent *e)
-    {
-//        NSLog(@"%@", e);
-        MouseMoved = 1;
-    }];
-    
-    NSTimer *CheckMouse = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(CheckMouse:) userInfo:nil repeats:YES];
-    
-    [[NSRunLoop mainRunLoop] addTimer:CheckMouse forMode:NSRunLoopCommonModes];
+//    [NSEvent addGlobalMonitorForEventsMatchingMask:NSMouseMovedMask|NSKeyDownMask|NSLeftMouseDownMask handler:^(NSEvent *e)
+//    {
+////        NSLog(@"%@", e);
+//        MouseMoved = 1;
+//    }];
+//    
+//    NSTimer *CheckMouse1 = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(CheckMouse:) userInfo:nil repeats:YES];
+//    
+//    [[NSRunLoop mainRunLoop] addTimer:CheckMouse1 forMode:NSRunLoopCommonModes];
 
     
->>>>>>> 5d4b6fbca0db6782ffd3d910bde5299bb52c3bd4
     Paused = NO;
     PlanTime = 25;
+//    PlanTime = 1;
     [self.datePicker setMinDate:[NSDate date]];
+    self.countdownDate = [NSDate dateWithTimeIntervalSinceNow:PlanTime*60+1];
     [self.datePicker setDateValue:self.countdownDate];
     [self.datePicker setTarget:self];
     [self.datePicker setAction:@selector(pickerChanged:)];
@@ -245,14 +219,15 @@ NSString * const kDoneString = @"Done!";
     self.timerWindowVisible = YES;
     [self.window setLevel: NSFloatingWindowLevel];
     [self.window setOpaque:NO];
-    [self.window setAlphaValue:0.6];
+
+    [self.window setAlphaValue:0.8];
     
     
     ShowOnTop = NO;
     [self TapedWindow:nil];
     [self ShowTime:PlanTime seconds:0];
 //    [self.window setBackgroundColor:[NSColor clearColor]];
-    self.StartButton.title = @"▸";
+//    self.StartButton.title = @"▸";
     
     BlinkTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(BlinkTimerWindow:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:BlinkTimer forMode:NSRunLoopCommonModes];
@@ -310,12 +285,16 @@ NSString * const kDoneString = @"Done!";
     [db open];
     NSString * sql = @"insert into Work1 (plan, type) values(?, ?) ";
  
+    
+    
     NSMutableArray *APlanList = [NSMutableArray arrayWithArray:[self.APlanView.string componentsSeparatedByString:@"\n"]];
     for (id plan in APlanList)
     {
         [db executeUpdate:sql,plan,@"A"];
     }
 
+    
+    
     
     NSMutableArray *A7DaysPlanList = [NSMutableArray arrayWithArray:[self.A7DaysPlanView.string componentsSeparatedByString:@"\n"]];
     for (id plan in A7DaysPlanList)
@@ -324,11 +303,15 @@ NSString * const kDoneString = @"Done!";
     }
     
     
+    
+    
     NSMutableArray *BPlanList = [NSMutableArray arrayWithArray:[self.BPlanView.string componentsSeparatedByString:@"\n"]];
     for (id plan in BPlanList)
     {
         [db executeUpdate:sql,plan,@"B"];
     }
+    
+    
 
     NSMutableArray *GoalList = [NSMutableArray arrayWithArray:[self.GoalView.string componentsSeparatedByString:@"\n"]];
     for (id plan in GoalList)
@@ -401,6 +384,15 @@ NSString * const kDoneString = @"Done!";
     }
 
     
+    self.APlanView.string =  [self.APlanView.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.A7DaysPlanView.string =  [self.A7DaysPlanView.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.BPlanView.string =  [self.BPlanView.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.GoalView.string =  [self.GoalView.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+//    self.APlanView.textColor = [NSColor whiteColor];
+    self.BPlanView.textColor = [NSColor whiteColor];
+    self.BPlanView.font = [NSFont userFontOfSize:18];
+    
     [db close];
 }
 
@@ -464,8 +456,8 @@ NSString * const kDoneString = @"Done!";
     }
     
 
-    if (count==0)
-        self.StartButton.title = @"0";
+//    if (count==0)
+//        self.StartButton.title = @"0";
     
     
     NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat:@"准备聚焦目标：《%@》",self.CurrentGoal.stringValue]
@@ -486,6 +478,17 @@ NSString * const kDoneString = @"Done!";
     
     [self.WorkingTable close];
 }
+
+
+- (IBAction)TapedVim:(id)sender
+{
+//    NSString *cmdLine = @"bash vim ";
+//    [self performSelector:@selector(runCommand:)  withObject:cmdLine afterDelay:0];
+    
+    [[NSWorkspace sharedWorkspace] openFile:@"/iWork/pushgit.sh"
+                            withApplication:@"TextEdit"];
+}
+
 
 - (IBAction)TapGoalDone:(NSButton *)sender
 {
@@ -547,7 +550,8 @@ NSString * const kDoneString = @"Done!";
 }
 
 //一秒执行一次
-- (void)timerFired:(NSTimer *)timer {
+- (void)timerFired:(NSTimer *)timer
+{
     
     NSInteger days, hours, minutes, seconds;
     
@@ -578,8 +582,8 @@ NSString * const kDoneString = @"Done!";
     [self.statusItem setTitle:labelString];
 }
 
-- (void)windowWillClose:(NSNotification *)notification {
-
+- (void)windowWillClose:(NSNotification *)notification
+{
     NSWindow *window = [notification object];
     if (window == self.window) {
         self.timerWindowVisible = NO;
@@ -589,7 +593,8 @@ NSString * const kDoneString = @"Done!";
 
 }
 
-- (IBAction)quit:(id)sender {
+- (IBAction)quit:(id)sender
+{
     [[NSApplication sharedApplication] terminate:self];
 }
 
@@ -654,3 +659,4 @@ NSString * const kDoneString = @"Done!";
 
 
 @end
+
