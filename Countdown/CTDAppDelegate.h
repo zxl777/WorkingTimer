@@ -22,6 +22,9 @@
     NSTimer *TipsTimer;
     bool MouseMoved;
     int MouseSleepSecond;
+    int days;
+    
+    NSDate *BeginDay;
 }
 
 @property (unsafe_unretained) IBOutlet NSWindow *GoalWindow;
@@ -76,6 +79,9 @@
 @property (strong) NSDate *countdownDate;
 @property (strong) NSStatusItem *statusItem;
 @property (assign) BOOL timerWindowVisible;
+
+@property (weak) IBOutlet NSButton *Days;
+
 
 
 @end

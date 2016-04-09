@@ -16,6 +16,26 @@ NSString * const kDoneString = @"Done!";
 @implementation CTDAppDelegate
 
 
+- (IBAction)TapedDaysButton:(id)sender
+{
+    if (days>=10)
+        days=1;
+    else days++;
+    [self SetDays:days];
+}
+
+-(void)SetDays:(int)day
+{
+    self.Days.title = [NSString stringWithFormat:@"%d天" ,day];
+    BeginDay = [NSDate dateWithTimeIntervalSinceNow:0];
+//    BeginDay = [NSDate dateWithTimeInterval:-24*60*60 sinceDate:[NSDate date]];
+    
+    NSMutableAttributedString *colorTitle = [[NSMutableAttributedString alloc] initWithAttributedString:[self.Days attributedTitle]];
+    NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+    [colorTitle addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:titleRange];
+    [self.Days setAttributedTitle:colorTitle];
+    
+}
 
 - (IBAction)GoalOK:(id)sender
 {
@@ -178,6 +198,8 @@ NSString * const kDoneString = @"Done!";
 #pragma mark 番茄钟自动启动设计
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    days=7;
+    [self SetDays:days];
 /*
  有动作就启动的设计：
     1、回到电脑前，一动鼠标，启动25分钟计时。
@@ -321,6 +343,10 @@ NSString * const kDoneString = @"Done!";
     
     [db executeUpdate:sql,self.CurrentGoal.stringValue,@"D"];
     
+    [[NSUserDefaults standardUserDefaults] setInteger:days forKey:@"days"];
+    [[NSUserDefaults standardUserDefaults] setObject:BeginDay forKey:@"BeginDay"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     
     [db close];
 }
@@ -334,6 +360,9 @@ NSString * const kDoneString = @"Done!";
 
 -(void)LoadData
 {
+    days = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"days"];
+    BeginDay = [[NSUserDefaults standardUserDefaults] objectForKey:@"BeginDay"];
+    
     FMDatabase * db = [FMDatabase databaseWithPath:self.dbPath];
     [db open];
     NSString * sql = @"select * from Work1 WHERE type = 'A'";
@@ -403,6 +432,27 @@ NSString * const kDoneString = @"Done!";
 
 - (IBAction)TapedSetGoal:(NSButton *)sender
 {
+    self.Days.wantsLayer = YES;
+    self.Days.bordered = NO;
+    self.Days.layer.backgroundColor = [NSColor colorWithCalibratedRed:22.0/255 green:102.0/255 blue:248.0/255 alpha:1.0].CGColor;
+    self.Days.layer.cornerRadius = 5;
+    self.Days.layer.borderWidth =1;
+
+    
+    
+    
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned int unitFlag = NSDayCalendarUnit;
+    NSDateComponents *components = [calendar components:unitFlag fromDate:BeginDay toDate:[NSDate date] options:0];
+    int d = (int)[components day];
+    
+    days = days - d;
+    [self SetDays:days];
+    
+    
+
+    
     if (![self.TimeLabel.stringValue isEqualToString:[NSString stringWithFormat:@"%d:00",PlanTime ]])
         IRQCount ++;
     [self.WorkingTable makeKeyAndOrderFront:self];

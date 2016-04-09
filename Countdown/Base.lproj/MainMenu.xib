@@ -684,6 +684,7 @@
                 <outlet property="CommandLine" destination="lJm-EN-I44" id="CaF-5C-eni"/>
                 <outlet property="CurrentGoal" destination="kV3-zq-BIV" id="IkT-J8-WV3"/>
                 <outlet property="CurrentGoalButton" destination="deT-GF-QBK" id="nRU-e2-s3Z"/>
+                <outlet property="Days" destination="VJN-9w-GlS" id="Rfh-ay-o6s"/>
                 <outlet property="GoalInfo" destination="RP0-UL-Apc" id="J6P-Tk-yQp"/>
                 <outlet property="GoalView" destination="bOQ-v0-3od" id="U0W-Pm-4NU"/>
                 <outlet property="GoalWindow" destination="DMa-ff-EMJ" id="PXL-1f-7zG"/>
@@ -699,14 +700,14 @@
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="ork-Vp-Leq" customClass="JWBorderlessWindow">
-            <rect key="contentRect" x="283" y="305" width="233" height="27"/>
+            <rect key="contentRect" x="283" y="305" width="233" height="29"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" wantsLayer="YES" id="AXz-C0-DXY">
-                <rect key="frame" x="0.0" y="0.0" width="233" height="27"/>
+                <rect key="frame" x="0.0" y="0.0" width="233" height="29"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e8Y-Tb-PGd">
-                        <rect key="frame" x="-4" y="0.0" width="73" height="27"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8Y-Tb-PGd">
+                        <rect key="frame" x="2" y="0.0" width="69" height="29"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" continuous="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" alignment="center" title="25:00" id="3mD-8s-Zuw">
                             <font key="font" size="24" name="HelveticaNeue-Bold"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -714,7 +715,7 @@
                         </textFieldCell>
                     </textField>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-Mb-tR8">
-                        <rect key="frame" x="204" y="0.0" width="29" height="27"/>
+                        <rect key="frame" x="204" y="1" width="29" height="27"/>
                         <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" imagePosition="overlaps" alignment="center" borderStyle="border" id="Ge8-Oh-twd">
                             <behavior key="behavior" pushIn="YES" changeBackground="YES" changeGray="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -734,6 +735,11 @@
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="e8Y-Tb-PGd" secondAttribute="bottom" id="3rU-u1-qxM"/>
+                    <constraint firstItem="e8Y-Tb-PGd" firstAttribute="leading" secondItem="AXz-C0-DXY" secondAttribute="leading" constant="4" id="8o0-2W-mzu"/>
+                    <constraint firstItem="e8Y-Tb-PGd" firstAttribute="top" secondItem="AXz-C0-DXY" secondAttribute="top" id="Wcw-Z2-ro0"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="-194.5" y="-415.5"/>
         </window>
@@ -918,7 +924,7 @@
                                     <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <size key="minSize" width="154" height="133"/>
                                     <size key="maxSize" width="463" height="10000000"/>
-                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="insertionPointColor" red="0.61496788263320923" green="0.7419770359992981" blue="0.92070764303207397" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <size key="minSize" width="154" height="133"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                 </textView>
@@ -1044,6 +1050,16 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VJN-9w-GlS">
+                        <rect key="frame" x="18" y="269" width="160" height="115"/>
+                        <buttonCell key="cell" type="bevel" title="7天" bezelStyle="regularSquare" alignment="center" borderStyle="border" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="Nnw-pX-oI3">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="systemBold" size="38"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="TapedDaysButton:" target="494" id="aij-uO-MJG"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <connections>
